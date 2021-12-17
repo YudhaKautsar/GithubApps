@@ -59,7 +59,7 @@ class AlarmReceiver : BroadcastReceiver() {
 
     @RequiresApi(Build.VERSION_CODES.M)
     fun setRepeatAlarm(context: Context, type: String, time: String, message: String){
-        if (isDateInvalid(time, TIME_FORMAT)) return
+        if (TIME_FORMAT.isDateInvalid(time)) return
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
         val intent = Intent(context, AlarmReceiver::class.java)
@@ -76,9 +76,9 @@ class AlarmReceiver : BroadcastReceiver() {
         Toast.makeText(context, context.getString(R.string.set_alarm), Toast.LENGTH_SHORT).show()
     }
 
-    private fun isDateInvalid(time: String, timeFormat: String): Boolean {
+    private fun String.isDateInvalid(time: String): Boolean {
         return try {
-            val tm = SimpleDateFormat(timeFormat, Locale.getDefault())
+            val tm = SimpleDateFormat(this, Locale.getDefault())
             tm.isLenient = false
             tm.parse(time)
             false

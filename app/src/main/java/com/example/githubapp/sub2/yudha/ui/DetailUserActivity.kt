@@ -1,13 +1,14 @@
 package com.example.githubapp.sub2.yudha.ui
 
 import android.annotation.SuppressLint
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.githubapp.sub2.yudha.adapter.SectionPagerAdapter
 import com.example.githubapp.sub2.yudha.databinding.ActivityDetailUserBinding
 import com.example.githubapp.sub2.yudha.viewmodel.DetailUserViewModel
+import com.example.githubapp.sub2.yudha.viewmodel.factory.DetailViewModelFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -36,8 +37,14 @@ class DetailUserActivity : AppCompatActivity() {
         val bundle = Bundle()
         bundle.putString(EXTRA_USERNAME, username)
 
-        viewModel = ViewModelProvider(this).get(DetailUserViewModel::class.java)
+        setViewModel(username, id, photo, bundle)
 
+
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun setViewModel(username: String?, id: Int, photo: String?, bundle: Bundle){
+        viewModel = ViewModelProvider(this, DetailViewModelFactory(application))[DetailUserViewModel::class.java]
         viewModel.setUserDetail(username.toString())
         viewModel.getUserDetail().observe(this, {
             if (it != null) {

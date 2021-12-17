@@ -1,16 +1,16 @@
 package com.example.githubapp.sub2.yudha.viewmodel
 
 import android.util.Log
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.example.githubapp.sub2.yudha.api.ApiConfig
 import com.example.githubapp.sub2.yudha.model.User
-import com.example.githubapp.sub2.yudha.preference.ThemePreference
-import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class FollowersViewModel(private val pref: ThemePreference): ViewModel() {
+class FollowersViewModel : ViewModel() {
     val listFollowers = MutableLiveData<ArrayList<User>>()
 
     fun setListFollowers(username: String){
@@ -34,10 +34,6 @@ class FollowersViewModel(private val pref: ThemePreference): ViewModel() {
 
     fun getListFollowers(): LiveData<ArrayList<User>>{
         return listFollowers
-    }
-
-    fun getThemeSettings(): LiveData<Boolean> {
-        return pref.getThemeSetting().asLiveData()
     }
 
 }

@@ -1,4 +1,4 @@
-package com.example.githubapp.sub2.yudha.favorite
+package com.example.githubapp.sub2.yudha.ui
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -10,8 +10,8 @@ import com.example.githubapp.sub2.yudha.adapter.UserAdapter
 import com.example.githubapp.sub2.yudha.databinding.ActivityFavoriteBinding
 import com.example.githubapp.sub2.yudha.local.FavoriteUser
 import com.example.githubapp.sub2.yudha.model.User
-import com.example.githubapp.sub2.yudha.ui.DetailUserActivity
 import com.example.githubapp.sub2.yudha.viewmodel.FavoriteViewModel
+import com.example.githubapp.sub2.yudha.viewmodel.factory.FavoriteViewModelFactory
 
 class FavoriteActivity : AppCompatActivity() {
 
@@ -27,8 +27,6 @@ class FavoriteActivity : AppCompatActivity() {
 
         adapter = UserAdapter()
         adapter.notifyDataSetChanged()
-
-        viewModel =ViewModelProvider(this).get(FavoriteViewModel::class.java)
 
         adapter.setOnItemClickCallback(object : UserAdapter.OnItemClickCallback{
             override fun onItemClicked(data: User) {
@@ -48,12 +46,7 @@ class FavoriteActivity : AppCompatActivity() {
             rvUserFav.adapter = adapter
         }
 
-        viewModel.getFavUser()?.observe(this, {
-            if (it != null) {
-                val list = mapList(it)
-                adapter.setList(list)
-            }
-        })
+        setViewModel()
     }
 
     private fun mapList(users: List<FavoriteUser>): ArrayList<User> {
@@ -68,5 +61,18 @@ class FavoriteActivity : AppCompatActivity() {
         }
         return listUsers
 
+    }
+
+    private fun setViewModel() {
+        viewModel = ViewModelProvider(
+            this,
+            FavoriteViewModelFactory(application)
+        )[FavoriteViewModel::class.java]
+        viewModel.getFavUser()?.observe(this, {
+            if (it != null) {
+                val list = mapList(it)
+                adapter.setList(list)
+            }
+        })
     }
 }

@@ -3,7 +3,6 @@ package com.example.githubapp.sub2.yudha.fragment
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,6 +11,7 @@ import com.example.githubapp.sub2.yudha.adapter.UserAdapter
 import com.example.githubapp.sub2.yudha.databinding.FragmentFollowBinding
 import com.example.githubapp.sub2.yudha.ui.DetailUserActivity
 import com.example.githubapp.sub2.yudha.viewmodel.FollowingsViewModel
+import com.example.githubapp.sub2.yudha.viewmodel.factory.FollowingsViewModelFactory
 
 class FollowingsFragment: Fragment(R.layout.fragment_follow) {
 
@@ -40,16 +40,9 @@ class FollowingsFragment: Fragment(R.layout.fragment_follow) {
         }
 
         showLoading(true)
-        viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(FollowingsViewModel::class.java)
-        viewModel.setListFollowings(username)
-        viewModel.getListFollowings().observe(viewLifecycleOwner, {
-            if (it != null){
-                showLoading(false)
-                adapter.setList(it)
-            }
-        })
+        setViewModel(username)
 
-        darkModeCheck()
+
     }
 
     override fun onDestroyView() {
@@ -64,11 +57,15 @@ class FollowingsFragment: Fragment(R.layout.fragment_follow) {
             binding?.progressBar?.visibility = View.GONE
         }
     }
-    private fun darkModeCheck(){
-        viewModel.getThemeSettings().observe(viewLifecycleOwner,{isDarkModeActive ->
-            if (isDarkModeActive) AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            else AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        })
 
+    private fun setViewModel(username: String){
+        viewModel = ViewModelProvider(this, FollowingsViewModelFactory())[FollowingsViewModel::class.java]
+        viewModel.setListFollowings(username)
+        viewModel.getListFollowings().observe(viewLifecycleOwner, {
+            if (it != null){
+                showLoading(false)
+                adapter.setList(it)
+            }
+        })
     }
 }

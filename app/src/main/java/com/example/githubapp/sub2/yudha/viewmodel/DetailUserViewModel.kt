@@ -2,13 +2,14 @@ package com.example.githubapp.sub2.yudha.viewmodel
 
 import android.app.Application
 import android.util.Log
-import androidx.lifecycle.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.githubapp.sub2.yudha.api.ApiConfig
 import com.example.githubapp.sub2.yudha.local.FavoriteUser
 import com.example.githubapp.sub2.yudha.local.FavoriteUserDao
 import com.example.githubapp.sub2.yudha.local.database.UserDatabase
 import com.example.githubapp.sub2.yudha.model.User
-import com.example.githubapp.sub2.yudha.preference.ThemePreference
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -16,7 +17,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class DetailUserViewModel(application: Application, private val pref: ThemePreference) : AndroidViewModel(application) {
+class DetailUserViewModel(application: Application) : AndroidViewModel(application) {
 
     val user = MutableLiveData<User>()
 

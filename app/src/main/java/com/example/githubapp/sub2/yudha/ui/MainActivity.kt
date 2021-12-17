@@ -1,28 +1,26 @@
 package com.example.githubapp.sub2.yudha.ui
 
-    import android.annotation.SuppressLint
-    import android.content.Context
-    import android.content.Intent
-    import android.os.Bundle
-    import android.view.KeyEvent
-    import android.view.Menu
-    import android.view.MenuItem
-    import android.view.View
-    import androidx.appcompat.app.AppCompatActivity
-    import androidx.appcompat.app.AppCompatDelegate
-    import androidx.datastore.core.DataStore
-    import androidx.datastore.preferences.core.Preferences
-    import androidx.datastore.preferences.preferencesDataStore
-    import androidx.lifecycle.ViewModelProvider
-    import androidx.recyclerview.widget.LinearLayoutManager
-    import com.example.githubapp.sub2.yudha.R
-    import com.example.githubapp.sub2.yudha.adapter.UserAdapter
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
+import android.os.Bundle
+import android.view.KeyEvent
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.githubapp.sub2.yudha.R
+import com.example.githubapp.sub2.yudha.adapter.UserAdapter
 import com.example.githubapp.sub2.yudha.databinding.ActivityMainBinding
-    import com.example.githubapp.sub2.yudha.favorite.FavoriteActivity
-    import com.example.githubapp.sub2.yudha.model.User
-    import com.example.githubapp.sub2.yudha.preference.ThemePreference
-    import com.example.githubapp.sub2.yudha.viewmodel.MainViewModel
-    import com.example.githubapp.sub2.yudha.viewmodel.factory.MainViewModelFactory
+import com.example.githubapp.sub2.yudha.model.User
+import com.example.githubapp.sub2.yudha.preference.ThemePreference
+import com.example.githubapp.sub2.yudha.viewmodel.MainViewModel
+import com.example.githubapp.sub2.yudha.viewmodel.factory.MainViewModelFactory
 
 class MainActivity : AppCompatActivity() {
 
@@ -71,26 +69,17 @@ class MainActivity : AppCompatActivity() {
                 return@setOnKeyListener false
             }
         }
+    }
 
+    private fun setViewModel(){
+        val pref = ThemePreference.getInstance(dataStore)
+        viewModel = ViewModelProvider(this, MainViewModelFactory(pref))[MainViewModel::class.java]
         viewModel.getSearchUser().observe(this, {
             if (it != null) {
                 showLoading(false)
                 adapter.setList(it)
             }
         })
-        darkModeCheck()
-    }
-
-    private fun setViewModel(){
-        val pref = ThemePreference.getInstance(dataStore)
-        viewModel = ViewModelProvider(this, MainViewModelFactory(pref))[MainViewModel::class.java]
-    }
-    private fun darkModeCheck(){
-        viewModel.getThemeSettings().observe(this@MainActivity,{isDarkModeActive ->
-            if (isDarkModeActive) AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            else AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        })
-
     }
     private fun searchUser() {
         binding.apply {
