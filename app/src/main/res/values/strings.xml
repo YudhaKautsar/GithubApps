@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">GithubApp</string>
+    <string name="content_desc_foto_user_github">Foto User Github</string>
+    <string name="search">Search</string>
+    <string name="logo_search_desc">Logo Search</string>
+
+    <string name="tabs_follower">Followers</string>
+    <string name="tabs_following">Followings</string>
+    <string name="switch_on">ON</string>
+    <string name="switch_off">OFF</string>
+    <string name="reminder">Set Reminder</string>
+    <string name="theme">Dark Mode</string>
+    <string name="settings_menu">Settings</string>
+    <string name="favorite_menu">Favorite</string>
+
+    <string name="find_notif">Temukan favorit user anda sekarang!</string>
+    <string name="cancel_alarm">Repeating alarm dibatalkan</string>
+    <string name="set_alarm">Repeating alarm set up</string>
+    <string name="logo_github_splash_desc">Logo Github Splash</string>
+</resources>
