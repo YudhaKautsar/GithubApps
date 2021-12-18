@@ -9,6 +9,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
@@ -69,6 +70,8 @@ class MainActivity : AppCompatActivity() {
                 return@setOnKeyListener false
             }
         }
+
+        getDarkTheme()
     }
 
     private fun setViewModel(){
@@ -117,6 +120,19 @@ class MainActivity : AppCompatActivity() {
             binding.progressBar.visibility = View.VISIBLE
         } else {
             binding.progressBar.visibility = View.GONE
+        }
+    }
+
+    private fun getDarkTheme(){
+        val pref = ThemePreference.getInstance(dataStore)
+        val mainVIewModel = ViewModelProvider(this, MainViewModelFactory(pref)).get(
+            MainViewModel::class.java
+        )
+        binding.apply {
+            mainVIewModel.getThemeSettings().observe(this@MainActivity, {
+                if (it) AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                else AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            })
         }
     }
 }
