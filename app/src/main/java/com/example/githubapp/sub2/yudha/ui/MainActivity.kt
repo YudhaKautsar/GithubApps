@@ -1,7 +1,6 @@
 package com.example.githubapp.sub2.yudha.ui
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.KeyEvent
@@ -9,22 +8,17 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.githubapp.sub2.yudha.R
 import com.example.githubapp.sub2.yudha.adapter.UserAdapter
 import com.example.githubapp.sub2.yudha.databinding.ActivityMainBinding
 import com.example.githubapp.sub2.yudha.model.User
-import com.example.githubapp.sub2.yudha.preference.ThemePreference
 import com.example.githubapp.sub2.yudha.viewmodel.MainViewModel
 import com.example.githubapp.sub2.yudha.viewmodel.factory.MainViewModelFactory
 
 class MainActivity : AppCompatActivity() {
 
-    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewModel: MainViewModel
@@ -112,8 +106,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setViewModel(){
-        val pref = ThemePreference.getInstance(dataStore)
-        viewModel = ViewModelProvider(this, MainViewModelFactory(pref))[MainViewModel::class.java]
+        viewModel = ViewModelProvider(this, MainViewModelFactory())[MainViewModel::class.java]
         viewModel.getSearchUser().observe(this, {
             if (it != null) {
                 showLoading(false)
