@@ -9,7 +9,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
@@ -34,6 +33,7 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setViewModel()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -51,7 +51,6 @@ class MainActivity : AppCompatActivity() {
             }
 
         })
-        setViewModel()
 
         binding.apply {
             rvUser.layoutManager = LinearLayoutManager(this@MainActivity)
@@ -71,19 +70,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        getDarkTheme()
     }
 
-    private fun setViewModel(){
-        val pref = ThemePreference.getInstance(dataStore)
-        viewModel = ViewModelProvider(this, MainViewModelFactory(pref))[MainViewModel::class.java]
-        viewModel.getSearchUser().observe(this, {
-            if (it != null) {
-                showLoading(false)
-                adapter.setList(it)
-            }
-        })
-    }
     private fun searchUser() {
         binding.apply {
             val query = editSearch.text.toString()
@@ -123,16 +111,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun getDarkTheme(){
+    private fun setViewModel(){
         val pref = ThemePreference.getInstance(dataStore)
-        val mainVIewModel = ViewModelProvider(this, MainViewModelFactory(pref)).get(
-            MainViewModel::class.java
-        )
-        binding.apply {
-            mainVIewModel.getThemeSettings().observe(this@MainActivity, {
-                if (it) AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                else AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            })
-        }
+        viewModel = ViewModelProvider(this, MainViewModelFactory(pref))[MainViewModel::class.java]
+        viewModel.getSearchUser().observe(this, {
+            if (it != null) {
+                showLoading(false)
+                adapter.setList(it)
+            }
+        })
     }
 }
